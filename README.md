@@ -16,16 +16,20 @@ This is a TwitchBot that allows viewers to Backseat the streamer.
 
 - `!add <timestamp> <message>` - Adds a message to the queue
 - `!info` - Shows the message at the given timestamp
+- `!next` - Enters next session file
 
 ## TODO
 
 - [ ] Add a way for viewers to queue the messages from the textfile
 - [ ] Save in TxT and JSON to allow for the above
 - [ ] GUI? (prob not)
+- [X] Clear file on command
+- [X] Make multiple files possible on the same day
+- [X] Folder for each day
 
 ## Credits
 
-- [this one guy there](https://www.discordapp.com/users/294910497499774976)
+- [this one guy there that helped me test](https://www.discordapp.com/users/294910497499774976)
 - [DrPanger for the Idea](https://www.twitch.tv/drpanger)
 
 <div align="center">

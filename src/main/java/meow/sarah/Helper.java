@@ -11,6 +11,7 @@ public class Helper {
 
     public static void messageEvent(ChannelMessageEvent event, TwitchClient twitchClient, String currentPath) {
         //Logger.log(event.getUser().getName() + ": " + event.getMessage());
+        FileHelper fileHelper = new FileHelper();
         String message = event.getMessage();
         String[] arguments = message.split(" ");
         var mention = messageResponse.mentionUser(event.getUser().getName());
@@ -49,6 +50,9 @@ public class Helper {
         } else if (message.startsWith(prefix + "info")) {
             // Logger.log(event.getUser().getName() + " requested info!");
             twitchClient.getChat().sendMessage(event.getChannel().getName(), mention + "This allows you to backseat by typing a timestamp and what u want to backseat with !add <timestamp> <message>");
+        } else if (message.startsWith(prefix + "next") && FileHelper.owner.equals(event.getUser().getId())) {
+            fileHelper.setFileCount(fileHelper.getFileCount() + 1);
+            twitchClient.getChat().sendMessage(event.getChannel().getName(), mention + "Starting new Session File!");
         }
         // if starts with prefix and not add or info
         else if (message.startsWith(prefix) && !message.startsWith(prefix + "add") && !message.startsWith(prefix + "info")) {

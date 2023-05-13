@@ -20,15 +20,13 @@ import static meow.sarah.FileHelper.*;
  */
 public class Main {
 
-    static boolean connected = false;
-
+    static boolean firstRun = false;
+    static String date = new SimpleDateFormat("dd-MM-yyyy").format(new Date());
     static File outputfile = new File("output.txt");
 
     public static void main(String[] args) throws IOException {
         System.out.println("Starting...");
         String currentPath = new java.io.File(".").getCanonicalPath();
-        // get current date
-        String date = new SimpleDateFormat("dd-MM-yyyy").format(new Date());
         outputfile = new File("output-" + date + ".txt");
         try {
             loadFile(currentPath);
@@ -47,15 +45,5 @@ public class Main {
         twitchClient.getEventManager().onEvent(ChannelMessageEvent.class, event -> {
             Helper.messageEvent(event, twitchClient, currentPath);
         });
-    }
-
-    // init method - useless atm
-    public static void init(TwitchClient twitchClient) {
-        try {
-            twitchClient.getChat().joinChannel(channel);
-            Logger.log("Joined channel " + channel);
-        } catch (Exception e) {
-            Logger.log("Failed to join channel " + channel);
-        }
     }
 }
