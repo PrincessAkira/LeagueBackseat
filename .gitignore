@@ -9,6 +9,8 @@ config.json
 output/
 
 *.json
+.idea/
+.idea*
 
 ### IntelliJ IDEA ###
 .idea/modules.xml
