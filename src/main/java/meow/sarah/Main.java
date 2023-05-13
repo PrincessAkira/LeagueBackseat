@@ -43,7 +43,11 @@ public class Main {
         twitchClient.getChat().sendMessage(channel, "Bot connected!");
         Logger.log("Bot connected!");
         twitchClient.getEventManager().onEvent(ChannelMessageEvent.class, event -> {
-            Helper.messageEvent(event, twitchClient, currentPath);
+            try {
+                Helper.messageEvent(event, twitchClient, currentPath);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
         });
     }
 }

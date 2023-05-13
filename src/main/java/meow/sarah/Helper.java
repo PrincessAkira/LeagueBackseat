@@ -5,11 +5,9 @@ import com.github.twitch4j.chat.events.channel.ChannelMessageEvent;
 
 import java.io.IOException;
 
-import static meow.sarah.Main.outputfile;
-
 public class Helper {
 
-    public static void messageEvent(ChannelMessageEvent event, TwitchClient twitchClient, String currentPath) {
+    public static void messageEvent(ChannelMessageEvent event, TwitchClient twitchClient, String currentPath) throws IOException {
         //Logger.log(event.getUser().getName() + ": " + event.getMessage());
         FileHelper fileHelper = new FileHelper();
         String message = event.getMessage();
@@ -22,9 +20,9 @@ public class Helper {
             String time = "";
             boolean timeFound = false;
             for (String line : arguments) {
-                // if string contains \d\D\d{2}|\d{2}\D\d{2}|\d{2}\D\d{1}d
+                // if string contains \d:\d{2}|\d{2}:\d{2}|\d{2}:\d{1}
                 // those 30h a week of regex paid off.
-                if (line.matches("\\d\\D\\d{2}|\\d{2}\\D\\d{2}|\\d{2}\\D\\d{1}") && !timeFound) {
+                if (line.matches("\\d:\\d{2}|\\d{2}:\\d{2}|\\d{2}:\\d{1}") && !timeFound) {
                     time = line;
                     timeFound = true;
                     //Logger.log("Found time " + time);
@@ -35,12 +33,16 @@ public class Helper {
                     stringBuilder.append(line).append(" ");
                 }
             }
+            if (stringBuilder.substring(stringBuilder.indexOf("\n") + 1).trim().length() < 1) {
+                twitchClient.getChat().sendMessage(event.getChannel().getName(), mention + "Try again with a message! (e.g 2:15 - message)");
+                return;
+            }
             if (!timeFound) {
-                twitchClient.getChat().sendMessage(event.getChannel().getName(), mention + "Try again with a timestamp! (2:15 - message)");
+                twitchClient.getChat().sendMessage(event.getChannel().getName(), mention + "Try again with a timestamp! (e.g 2:15 - message)");
                 return;
             }
             try {
-                FileHelper.writeFile(outputfile, stringBuilder.toString(), currentPath);
+                FileHelper.writeFile(stringBuilder.toString(), currentPath, time, mention);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -52,7 +54,18 @@ public class Helper {
             twitchClient.getChat().sendMessage(event.getChannel().getName(), mention + "This allows you to backseat by typing a timestamp and what u want to backseat with !add <timestamp> <message>");
         } else if (message.startsWith(prefix + "next") && FileHelper.owner.equals(event.getUser().getId())) {
             fileHelper.setFileCount(fileHelper.getFileCount() + 1);
+            fileHelper.setSessionCount(fileHelper.getSessionCount() + 1);
+            FileHelper.setBackseatCount(0);
             twitchClient.getChat().sendMessage(event.getChannel().getName(), mention + "Starting new Session File!");
+        } else if (message.startsWith(prefix + "searchall")) {
+            twitchClient.getChat().sendMessage(event.getChannel().getName(), FileHelper.getInput(Integer.parseInt(arguments[1])));
+            //Logger.log(event.getUser().getName() + " searched for " + arguments[1].toLowerCase());
+        } else if (message.startsWith(prefix + "searchuser")) {
+            // get mentioned user
+            String mentionedUser = event.getMessage().split(" ")[1];
+            twitchClient.getChat().sendMessage(event.getChannel().getName(), FileHelper.searchUserInput(mentionedUser.toLowerCase(), arguments[2]).toLowerCase());
+        } else if (message.startsWith(prefix + "list")) {
+            twitchClient.getChat().sendMessage(event.getChannel().getName(), FileHelper.listUserInputSize(arguments[1].toLowerCase()));
         }
         // if starts with prefix and not add or info
         else if (message.startsWith(prefix) && !message.startsWith(prefix + "add") && !message.startsWith(prefix + "info")) {
