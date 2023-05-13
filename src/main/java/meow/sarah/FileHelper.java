@@ -97,7 +97,7 @@ public class FileHelper {
             for (Map.Entry<String, Integer> entry : map.entrySet()) {
                 String content = entry.getKey();
                 int count = entry.getValue();
-                resultBuilder.append("Result ").append(count).append(" = \"").append(content).append("\"").append(System.lineSeparator()).append(" -").append("  ");
+                resultBuilder.append("Result ").append(count).append(" = \"").append(content).append("\"").append(System.lineSeparator()).append("  ");
             }
             return resultBuilder.toString();
         }
