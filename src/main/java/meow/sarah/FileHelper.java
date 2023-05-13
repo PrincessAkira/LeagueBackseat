@@ -15,7 +15,7 @@ public class FileHelper {
     public static String channel;
     public static String owner;
 
-    private static int fileCount = 0;
+    private static int fileCount = 1;
 
     public static void loadFile(String currentPath) throws IOException {
         File file = new File(currentPath + "/config.json");
