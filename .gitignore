@@ -12,6 +12,10 @@ output/
 .idea/
 .idea*
 
+.idea/workspace.xml
+
+*.xml
+
 ### IntelliJ IDEA ###
 .idea/modules.xml
 .idea/jarRepositories.xml
