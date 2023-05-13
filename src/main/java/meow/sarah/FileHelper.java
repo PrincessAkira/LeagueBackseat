@@ -116,10 +116,10 @@ public class FileHelper {
                 String time = backseat.getString("time");
                 String user = backseat.getString("user");
                 String content = backseat.getString("content");
-                Logger.log("Time: " + time + " User: " + user + " Content: " + content);
+                //Logger.log("Time: " + time + " User: " + user + " Content: " + content);
                 return user + " said this at " + time + ":\n" + content;
             } catch (Exception e) {
-                Logger.log("Failed to read JSON file!");
+                //Logger.log("Failed to read JSON file!");
             }
         }
         return "No input found!";

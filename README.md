@@ -17,11 +17,15 @@ This is a TwitchBot that allows viewers to Backseat the streamer.
 - `!add <timestamp> <message>` - Adds a message to the queue
 - `!info` - Shows the message at the given timestamp
 - `!next` - Enters next session file
+- `!list <@user>` - Gets a number of how many Backseats the user has added in the current session
+- `!searchall <IndexID>` - Searches current Session for the given IndexID
+- `!searchuser <@user> <Keyword>` - Searches current Session for the given Keyword and User and returns every message
+  with keyword from that user
 
 ## TODO
 
-- [ ] Add a way for viewers to queue the messages from the textfile
-- [ ] Save in TxT and JSON to allow for the above
+- [X] Add a way for viewers to queue the messages from the textfile
+- [X] Save in TxT and JSON to allow for the above
 - [ ] GUI? (prob not)
 - [X] Clear file on command
 - [X] Make multiple files possible on the same day
