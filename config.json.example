@@ -3,4 +3,6 @@
   "token" : "tokenhere",
   "channel" : "channelhere"
     "admin" : "ur id here"
+    "secret" : "secret here"
+    clientid : "client id here"
 }

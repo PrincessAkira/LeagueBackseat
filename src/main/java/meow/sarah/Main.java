@@ -38,10 +38,18 @@ public class Main {
         TwitchClient twitchClient = TwitchClientBuilder.builder()
                 .withEnableHelix(true)
                 .withChatAccount(credential)
+                .withClientId(clientid)
+                .withClientSecret(clientsecret)
                 .withEnableChat(true)
                 .build();
-        twitchClient.getChat().sendMessage(channel, "Bot connected!");
-        Logger.log("Bot connected!");
+        try {
+            twitchClient.getChat().joinChannel(channel);
+            twitchClient.getChat().sendMessage(channel, "Bot connected!");
+            Logger.log("Bot connected!");
+        } catch (Exception e) {
+            Logger.log("Failed to join channel!");
+            System.exit(0);
+        }
         twitchClient.getEventManager().onEvent(ChannelMessageEvent.class, event -> {
             try {
                 Helper.messageEvent(event, twitchClient, currentPath);
