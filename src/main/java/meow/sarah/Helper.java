@@ -10,7 +10,7 @@ public class Helper {
     public static String channel = FileHelper.channel;
 
     public static void messageEvent(ChannelMessageEvent event, TwitchClient twitchClient, String currentPath) throws IOException {
-        Logger.log(event.getUser().getName() + ": " + event.getMessage());
+        //Logger.log(event.getUser().getName() + ": " + event.getMessage());
         FileHelper fileHelper = new FileHelper();
         String message = event.getMessage();
         String[] arguments = message.split(" ");

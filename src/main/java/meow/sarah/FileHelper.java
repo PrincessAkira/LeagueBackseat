@@ -285,6 +285,7 @@ public class FileHelper {
         fileWriter.write(text = text.replaceAll("\\s+", " ").trim() + " ");
         fileWriter.flush();
         fileWriter.close();
+        // this should work in theory, but it doesn't
         obshelper.toggleSceneVisibility(true);
     }
 
