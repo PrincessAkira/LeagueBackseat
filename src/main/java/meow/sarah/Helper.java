@@ -66,8 +66,12 @@ public class Helper {
             // get mentioned user
             String mentionedUser = event.getMessage().split(" ")[1];
             twitchClient.getChat().sendMessage(channel, FileHelper.searchUserInput(mentionedUser.toLowerCase(), arguments[2]).toLowerCase());
-        } else if (message.startsWith(prefix + "list")) {
+        } else if (message.startsWith(prefix + "listuser")) {
             twitchClient.getChat().sendMessage(channel, FileHelper.listUserInputSize(arguments[1].toLowerCase()));
+        } else if (message.startsWith(prefix + "list")) {
+            twitchClient.getChat().sendMessage(channel, FileHelper.listAll());
+        } else if (message.startsWith(prefix + "searchall")) {
+
         }
         // if starts with prefix and not add or info
         else if (message.startsWith(prefix) && !message.startsWith(prefix + "add") && !message.startsWith(prefix + "info")) {
