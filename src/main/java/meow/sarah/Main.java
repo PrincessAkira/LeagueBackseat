@@ -22,7 +22,7 @@ public class Main {
 
     static boolean firstRun = false;
     static String date = new SimpleDateFormat("dd-MM-yyyy").format(new Date());
-    static File outputfile = new File("output.txt");
+    static File outputfile;
 
     public static void main(String[] args) throws IOException {
         System.out.println("Starting...");

@@ -48,6 +48,10 @@ public class FileHelper {
 
         if (file != null) {
             String fileContent = Files.readString(Paths.get(file.getAbsolutePath()), StandardCharsets.UTF_8);
+            // if file is empty, return
+            if (fileContent.isEmpty()) {
+                return "Nothing was added to the current session yet!";
+            }
             JSONObject jsonData = new JSONObject(fileContent);
             for (String key : jsonData.keySet()) {
                 if (key.startsWith("backseat")) {
@@ -73,6 +77,10 @@ public class FileHelper {
 
         if (file != null) {
             String fileContent = Files.readString(Paths.get(file.getAbsolutePath()), StandardCharsets.UTF_8);
+            // if file is empty, return
+            if (fileContent.isEmpty()) {
+                return "Nothing was added to the current session yet!";
+            }
             JSONObject jsonData = new JSONObject(fileContent);
             HashMap<String, Integer> map = new HashMap<>();
 
@@ -111,15 +119,19 @@ public class FileHelper {
         if (file != null) {
             try {
                 String json = Files.readString(Paths.get(file.getAbsolutePath()));
+                // if file is empty, return
+                if (json.isEmpty()) {
+                    return "Nothing was added to the current session yet!";
+                }
                 JSONObject jsonObject = new JSONObject(json);
                 JSONObject backseat = jsonObject.getJSONObject("backseat" + id);
                 String time = backseat.getString("time");
                 String user = backseat.getString("user");
                 String content = backseat.getString("content");
-                //Logger.log("Time: " + time + " User: " + user + " Content: " + content);
+                Logger.log("Time: " + time + " User: " + user + " Content: " + content);
                 return user + " said this at " + time + ":\n" + content;
             } catch (Exception e) {
-                //Logger.log("Failed to read JSON file!");
+                Logger.log("Failed to read JSON file!");
             }
         }
         return "No input found!";
@@ -141,7 +153,7 @@ public class FileHelper {
             fileCount += files.length;
         }
         Main.firstRun = true;
-        Logger.log(fileCount + " : Count");
+        //Logger.log(fileCount + " : Count");
 
         File file = new File(folder, "Session-" + fileCount + ".txt");
 

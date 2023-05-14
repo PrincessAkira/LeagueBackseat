@@ -8,6 +8,8 @@ config.json
 .gitignore
 output/
 
+Test
+
 *.json
 .idea/
 .idea*

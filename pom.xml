@@ -36,6 +36,56 @@
                     </execution>
                 </executions>
             </plugin>
+            <!-- LAUNCH4J -->
+            <plugin>
+                <groupId>com.akathist.maven.plugins.launch4j</groupId>
+                <artifactId>launch4j-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>l4j-clui</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>launch4j</goal>
+                        </goals>
+                        <configuration>
+                            <headerType>console</headerType>
+                            <outfile>target/LeagueBackseat.exe</outfile>
+                            <jar>target/LeagueBackseat-1.0-SNAPSHOT-jar-with-dependencies.jar</jar>
+                            <icon>src/main/resources/icon.ico</icon>
+                            <classPath>
+                                <mainClass>meow.sarah.Main</mainClass>
+                                <preCp>anything</preCp>
+                            </classPath>
+                            <singleInstance>
+                                <mutexName>LeagueBackseat</mutexName>
+                                <windowTitle>LeagueBackseat</windowTitle>
+                            </singleInstance>
+                            <jre>
+                                <requiresJdk>false</requiresJdk>
+                                <requires64Bit>false</requires64Bit>
+                                <path>%JAVA_HOME%;%PATH%</path>
+                                <minVersion>1.8</minVersion>
+                            </jre>
+                            <versionInfo>
+                                <fileVersion>
+                                    1.0.0.0
+                                </fileVersion>
+                                <fileDescription>LeagueBackseat</fileDescription>
+                                <productVersion>
+                                    1.0.0.0
+                                </productVersion>
+                                <txtProductVersion>
+                                    1.0.0.0
+                                </txtProductVersion>
+                                <copyright>Sarah Engel ™</copyright>
+                                <productName>LeagueBackseat</productName>
+                                <internalName>LeagueBackseat</internalName>
+                                <originalFilename>LeagueBackseat.exe</originalFilename>
+                            </versionInfo>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
         </plugins>
     </build>
 
@@ -49,6 +99,11 @@
             <groupId>org.json</groupId>
             <artifactId>json</artifactId>
             <version>20230227</version>
+        </dependency>
+        <dependency>
+            <groupId>com.akathist.maven.plugins.launch4j</groupId>
+            <artifactId>launch4j-maven-plugin</artifactId>
+            <version>2.3.3</version>
         </dependency>
     </dependencies>
 
