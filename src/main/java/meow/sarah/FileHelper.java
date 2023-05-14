@@ -103,13 +103,15 @@ public class FileHelper {
         int messageCount = 0;
 
         if (file != null) {
-            var fileContent = Files.readString(Paths.get(file.getAbsolutePath()), StandardCharsets.UTF_8);
+            String fileContent = Files.readString(Paths.get(file.getAbsolutePath()), StandardCharsets.UTF_8);
             // if file is empty, return
             if (fileContent.isEmpty()) {
                 return "Nothing was added to the current session yet!";
             }
             JSONObject jsonData = new JSONObject(fileContent);
             HashMap<String, Integer> map = new HashMap<>();
+
+            Logger.log("Searching for \"" + search + "\" in the current session...");
 
             for (String key : jsonData.keySet()) {
                 if (key.startsWith("backseat")) {
@@ -118,6 +120,7 @@ public class FileHelper {
                     if (content.matches(".*\\b" + search + "\\b.*")) {
                         messageCount++;
                         map.put(content, messageCount);
+                        Logger.log("Found \"" + search + "\" in message " + messageCount + " = \"" + content + "\"");
                     }
                 }
             }
@@ -137,6 +140,7 @@ public class FileHelper {
     }
 
     public static String searchUserInput(String user, String search) throws IOException {
+        Logger.log("Searching for \"" + search + "\" in the current session...");
         File file = getFile(new java.io.File(".").getCanonicalPath());
         int messageCount = 0;
 
@@ -148,6 +152,8 @@ public class FileHelper {
             }
             JSONObject jsonData = new JSONObject(fileContent);
             HashMap<String, Integer> map = new HashMap<>();
+
+            Logger.log("Here are the results:");
 
             for (String key : jsonData.keySet()) {
                 if (key.startsWith("backseat")) {

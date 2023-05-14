@@ -4,14 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="0286b958-4aca-4e77-8fc7-f9d51062bcf7" name="Changes" comment="Update README.md">
-      <change afterPath="$PROJECT_DIR$/src/main/resources/icon.ico" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+    <list default="true" id="0286b958-4aca-4e77-8fc7-f9d51062bcf7" name="Changes" comment="Add search command for everyone">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/meow/sarah/FileHelper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/meow/sarah/FileHelper.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/meow/sarah/Helper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/meow/sarah/Helper.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/meow/sarah/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/meow/sarah/Main.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -62,26 +58,29 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;ASKED_ADD_EXTERNAL_FILES&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
-    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;E:/DevStuff/LeagueBackseat/Test&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;prettierjs.PrettierConfiguration.Package&quot;: &quot;C:\\Users\\Sarah\\AppData\\Roaming\\npm\\node_modules\\prettier&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;reference.settings.ide.settings.notifications&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ASKED_ADD_EXTERNAL_FILES": "true",
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "extract.method.default.visibility": "private",
+    "git-widget-placeholder": "master",
+    "ignore.virus.scanning.warn.message": "true",
+    "last_opened_file_path": "E:/DevStuff/LeagueBackseat",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "prettierjs.PrettierConfiguration.Package": "C:\\Users\\Sarah\\AppData\\Roaming\\npm\\node_modules\\prettier",
+    "settings.editor.selected.configurable": "reference.settings.ide.settings.notifications",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="E:\DevStuff\LeagueBackseat" />
+      <recent name="E:\DevStuff\LeagueBackseat\src\main\java\meow\sarah" />
       <recent name="E:\DevStuff\LeagueBackseat\Test" />
       <recent name="$PROJECT_DIR$" />
       <recent name="$PROJECT_DIR$/target" />
@@ -132,7 +131,7 @@
       <workItem from="1683937567779" duration="3728000" />
       <workItem from="1683978316087" duration="15817000" />
       <workItem from="1684001897582" duration="2819000" />
-      <workItem from="1684070031621" duration="433000" />
+      <workItem from="1684070031621" duration="4121000" />
     </task>
     <task id="LOCAL-00001" summary="I hate my life">
       <created>1683937668600</created>
@@ -197,7 +196,28 @@
       <option name="project" value="LOCAL" />
       <updated>1683994486946</updated>
     </task>
-    <option name="localTasksCounter" value="10" />
+    <task id="LOCAL-00010" summary="Fix Channel">
+      <created>1684070475531</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1684070475531</updated>
+    </task>
+    <task id="LOCAL-00011" summary="Fix using different account for bot">
+      <created>1684071353356</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1684071353356</updated>
+    </task>
+    <task id="LOCAL-00012" summary="Add search command for everyone">
+      <created>1684071784193</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1684071784193</updated>
+    </task>
+    <option name="localTasksCounter" value="13" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -224,7 +244,10 @@
     <MESSAGE value="You can now list inputs and pattern search users" />
     <MESSAGE value="Change formatting" />
     <MESSAGE value="Update README.md" />
-    <option name="LAST_COMMIT_MESSAGE" value="Update README.md" />
+    <MESSAGE value="Fix Channel" />
+    <MESSAGE value="Fix using different account for bot" />
+    <MESSAGE value="Add search command for everyone" />
+    <option name="LAST_COMMIT_MESSAGE" value="Add search command for everyone" />
     <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="true" />
     <option name="REFORMAT_BEFORE_PROJECT_COMMIT" value="true" />
     <option name="REARRANGE_BEFORE_PROJECT_COMMIT" value="true" />

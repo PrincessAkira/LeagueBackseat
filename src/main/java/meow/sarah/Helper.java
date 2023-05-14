@@ -48,7 +48,7 @@ public class Helper {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            twitchClient.getChat().sendMessage(event.getChannel().getName(), mention + "backseat added to List!");
+            twitchClient.getChat().sendMessage(channel, mention + "backseat added to List!");
             //Logger.log(channel + " added a backseat to the list!");
             //Logger.log(mention);
         } else if (message.startsWith(prefix + "info")) {
@@ -59,22 +59,21 @@ public class Helper {
             fileHelper.setSessionCount(fileHelper.getSessionCount() + 1);
             FileHelper.setBackseatCount(0);
             twitchClient.getChat().sendMessage(channel, mention + "Starting new Session File!");
-        } else if (message.startsWith(prefix + "searchall")) {
+        } else if (message.startsWith(prefix + "get")) {
             twitchClient.getChat().sendMessage(channel, FileHelper.getInput(Integer.parseInt(arguments[1])));
             //Logger.log(event.getUser().getName() + " searched for " + arguments[1].toLowerCase());
         } else if (message.startsWith(prefix + "searchuser")) {
-            // get mentioned user
-            String mentionedUser = event.getMessage().split(" ")[1];
-            twitchClient.getChat().sendMessage(channel, FileHelper.searchUserInput(mentionedUser.toLowerCase(), arguments[2]).toLowerCase());
+            //Logger.log(String.valueOf(twitchClient.getChat().sendMessage(channel, FileHelper.searchUserInput(event.getMessage().split(" ")[1].toLowerCase(), arguments[2]))));
+            twitchClient.getChat().sendMessage(channel, FileHelper.searchUserInput(event.getMessage().split(" ")[1].toLowerCase(), arguments[2]));
         } else if (message.startsWith(prefix + "listuser")) {
             twitchClient.getChat().sendMessage(channel, FileHelper.listUserInputSize(arguments[1].toLowerCase()));
         } else if (message.startsWith(prefix + "list")) {
             twitchClient.getChat().sendMessage(channel, FileHelper.listAll());
         } else if (message.startsWith(prefix + "searchall")) {
-
+            twitchClient.getChat().sendMessage(channel, FileHelper.searchAllInput(arguments[1]));
         }
         // if starts with prefix and not add or info
-        else if (message.startsWith(prefix) && !message.startsWith(prefix + "add") && !message.startsWith(prefix + "info")) {
+        else if (message.startsWith(prefix) && !message.startsWith(prefix + "add") && !message.startsWith(prefix + "info") && !message.startsWith(prefix + "next") && !message.startsWith(prefix + "get") && !message.startsWith(prefix + "searchuser") && !message.startsWith(prefix + "listuser") && !message.startsWith(prefix + "list") && !message.startsWith(prefix + "searchall")) {
             twitchClient.getChat().sendMessage(channel, mention + "Unknown command!");
         }
     }
