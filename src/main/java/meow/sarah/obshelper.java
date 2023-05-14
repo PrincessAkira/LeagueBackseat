@@ -14,15 +14,18 @@ import io.obswebsocket.community.client.model.SceneItem;
 
 public class obshelper {
 
-    public static void init() {
-        Logger.log("Connecting to OBS...");
-        checkScene();
-    }    static OBSRemoteController leagueController = new OBSRemoteControllerBuilder()
+    public static int obsIndexID;
+
+    static OBSRemoteController leagueController = new OBSRemoteControllerBuilder()
             .host("localhost")
             .lifecycle()
             .onReady(obshelper::init).and()
             .port(4455)
             .build();
+
+    public static void init() {
+        Logger.log("Connected to OBS!");
+    }
 
     public static void checkScene() {
         // if there is no scene with the name "League", create one
@@ -37,6 +40,40 @@ public class obshelper {
                                 System.out.println("Scene created!");
                             }
                         });
+                    }
+                });
+            }
+        });
+    }
+
+    public static Integer getItemID(String scene) {
+        final Integer[] itemId2 = {null}; // Variable to hold the item ID
+
+        leagueController.getSceneItemList(scene, getSceneItemListResponse -> {
+            if (getSceneItemListResponse.isSuccessful()) {
+                getSceneItemListResponse.getSceneItems().forEach(sceneItem -> {
+                    if (sceneItem.getSourceName().equals("LeagueInput")) {
+                        obsIndexID = sceneItem.getSceneItemIndex();
+                        Logger.log(Integer.toString(obsIndexID));
+                    }
+                });
+            }
+        });
+        return obsIndexID;
+    }
+
+
+    public static void toggleSceneVisibility(boolean status) {
+        leagueController.getSceneList(getSceneListResponse -> {
+            if (getSceneListResponse.isSuccessful()) {
+                getSceneListResponse.getScenes().forEach(scene1 -> {
+                    if (scene1.getSceneName().equals(FileHelper.obsscene.trim())) {
+                        try {
+                            leagueController.setSceneItemLocked(scene1.getSceneName(), getItemID(scene1.getSceneName()), false, 10000);
+                            leagueController.setSceneItemEnabled(scene1.getSceneName(), getItemID(scene1.getSceneName()), status, 10000);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
                     }
                 });
             }

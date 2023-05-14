@@ -19,7 +19,7 @@ public class FileHelper {
     public static String clientsecret;
     public static String channel;
     public static String owner;
-
+    public static String obsscene;
     private static int fileCount = 1;
 
     private static int backseatCount = -1;
@@ -33,7 +33,8 @@ public class FileHelper {
         owner = jsonObject.getString("admin");
         clientid = jsonObject.getString("clientid");
         clientsecret = jsonObject.getString("secret");
-        if (prefix == null || authkey == null || channel == null || owner == null || clientid == null || clientsecret == null) {
+        obsscene = jsonObject.getString("obsscene");
+        if (prefix == null || authkey == null || channel == null || owner == null || clientid == null || clientsecret == null || obsscene == null) {
             Logger.log("Config file not found!");
             System.exit(0);
         }
@@ -272,16 +273,19 @@ public class FileHelper {
     }
 
     public static void writeOBSFile(String text) throws IOException {
+
         File textfile = new File("obs.txt");
         if (!textfile.exists()) {
             textfile.createNewFile();
         }
+        obshelper.toggleSceneVisibility(true);
         // remove old text from file and replace with new text
         FileWriter fileWriter = new FileWriter(textfile, false);
         // remove excessive whitespaces
         fileWriter.write(text = text.replaceAll("\\s+", " ").trim() + " ");
         fileWriter.flush();
         fileWriter.close();
+        obshelper.toggleSceneVisibility(true);
     }
 
     public static int getBackseatCount() {

@@ -50,13 +50,12 @@ public class Main {
             Logger.log("Failed to join channel!");
             System.exit(0);
         }
-        /* try {
+        try {
             obshelper.leagueController.connect();
-            Logger.log("Connected to OBS!");
         } catch (Exception e) {
             Logger.log("Failed to connect to OBS!");
             System.exit(0);
-        } */ // Due to Event not implemented i cant use this
+        }
         twitchClient.getEventManager().onEvent(ChannelMessageEvent.class, event -> {
             try {
                 Helper.messageEvent(event, twitchClient, currentPath);

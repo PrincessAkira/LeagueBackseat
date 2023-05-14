@@ -4,5 +4,7 @@
   "channel" : "channelhere"
     "admin" : "ur id here"
     "secret" : "secret here"
-    clientid : "client id here"
+    "clientid" : "client id here"
+    "obsscene" : "name here"
+    "refreshtoken" : "refresh token here"
 }
