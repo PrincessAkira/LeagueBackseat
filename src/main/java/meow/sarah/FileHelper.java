@@ -153,7 +153,7 @@ public class FileHelper {
             JSONObject jsonData = new JSONObject(fileContent);
             HashMap<String, Integer> map = new HashMap<>();
 
-            Logger.log("Here are the results:");
+            //Logger.log("Here are the results:");
 
             for (String key : jsonData.keySet()) {
                 if (key.startsWith("backseat")) {
@@ -239,6 +239,9 @@ public class FileHelper {
         backseatCount++;
         data.put("backseat" + backseatCount, backseatKey);
 
+        //obshelper.updateItemText("LeagueInput", obshelper.item("LeagueInput"), content2);
+        writeOBSFile(user.trim() + " - " + content2);
+
         try {
             File jsonFile = new File(folder, "Session-" + fileCount + ".json");
             if (!jsonFile.exists()) {
@@ -266,6 +269,19 @@ public class FileHelper {
         } catch (Exception e) {
             Logger.log("Failed to write to file!");
         }
+    }
+
+    public static void writeOBSFile(String text) throws IOException {
+        File textfile = new File("obs.txt");
+        if (!textfile.exists()) {
+            textfile.createNewFile();
+        }
+        // remove old text from file and replace with new text
+        FileWriter fileWriter = new FileWriter(textfile, false);
+        // remove excessive whitespaces
+        fileWriter.write(text = text.replaceAll("\\s+", " ").trim() + " ");
+        fileWriter.flush();
+        fileWriter.close();
     }
 
     public static int getBackseatCount() {

@@ -5,9 +5,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="0286b958-4aca-4e77-8fc7-f9d51062bcf7" name="Changes" comment="Add search command for everyone">
+      <change afterPath="$PROJECT_DIR$/obs.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/meow/sarah/obshelper.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/meow/sarah/FileHelper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/meow/sarah/FileHelper.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/meow/sarah/Helper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/meow/sarah/Helper.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/meow/sarah/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/meow/sarah/Main.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -73,7 +76,7 @@
     "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
     "prettierjs.PrettierConfiguration.Package": "C:\\Users\\Sarah\\AppData\\Roaming\\npm\\node_modules\\prettier",
-    "settings.editor.selected.configurable": "reference.settings.ide.settings.notifications",
+    "settings.editor.selected.configurable": "preferences.packagesearch.PackageSearchGeneralConfigurable",
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
@@ -131,7 +134,7 @@
       <workItem from="1683937567779" duration="3728000" />
       <workItem from="1683978316087" duration="15817000" />
       <workItem from="1684001897582" duration="2819000" />
-      <workItem from="1684070031621" duration="4121000" />
+      <workItem from="1684070031621" duration="12150000" />
     </task>
     <task id="LOCAL-00001" summary="I hate my life">
       <created>1683937668600</created>
@@ -217,7 +220,14 @@
       <option name="project" value="LOCAL" />
       <updated>1684071784193</updated>
     </task>
-    <option name="localTasksCounter" value="13" />
+    <task id="LOCAL-00013" summary="Add search command for everyone">
+      <created>1684074161220</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1684074161220</updated>
+    </task>
+    <option name="localTasksCounter" value="14" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
