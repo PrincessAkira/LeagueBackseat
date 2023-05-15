@@ -9,7 +9,7 @@ import io.obswebsocket.community.client.model.SceneItem;
  * @author https://github.com/PrincessAkira (Sarah)
  * Today is the 5/14/2023 @4:23 PM
  * This project is named LeagueBackseat
- * @description
+ * @description Worst fucking API to exist.
  */
 
 public class obshelper {
@@ -46,15 +46,16 @@ public class obshelper {
         });
     }
 
+    // yeah this is dirty, but it works so idc
     public static Integer getItemID(String scene) {
-        final Integer[] itemId2 = {null}; // Variable to hold the item ID
-
         leagueController.getSceneItemList(scene, getSceneItemListResponse -> {
             if (getSceneItemListResponse.isSuccessful()) {
                 getSceneItemListResponse.getSceneItems().forEach(sceneItem -> {
                     if (sceneItem.getSourceName().equals("LeagueInput")) {
+                        // why. cant. i return. this. value. without. it. being. null.
+                        // and. why. is. this. not a. returnable. integer.??????????????????????????????????
                         obsIndexID = sceneItem.getSceneItemIndex();
-                        Logger.log(Integer.toString(obsIndexID));
+                        //Logger.log(Integer.toString(obsIndexID));
                     }
                 });
             }
@@ -62,14 +63,15 @@ public class obshelper {
         return obsIndexID;
     }
 
-
+    // for context. this MUST and should have worked. why doesnt it then? because the Websocket API Is cringe.
     public static void toggleSceneVisibility(boolean status) {
         leagueController.getSceneList(getSceneListResponse -> {
             if (getSceneListResponse.isSuccessful()) {
                 getSceneListResponse.getScenes().forEach(scene1 -> {
                     if (scene1.getSceneName().equals(FileHelper.obsscene.trim())) {
                         try {
-                            leagueController.setSceneItemLocked(scene1.getSceneName(), getItemID(scene1.getSceneName()), false, 10000);
+                            // timeout? no clue. better than callback
+                            //leagueController.setSceneItemLocked(scene1.getSceneName(), getItemID(scene1.getSceneName()), false, 10000);
                             leagueController.setSceneItemEnabled(scene1.getSceneName(), getItemID(scene1.getSceneName()), status, 10000);
                         } catch (Exception e) {
                             e.printStackTrace();
@@ -79,6 +81,8 @@ public class obshelper {
             }
         });
     }
+
+    // we dont need this. Why? Dont ask me.
 
     public static SceneItem item(String scene) {
         SceneItem item = new SceneItem();
@@ -94,6 +98,7 @@ public class obshelper {
         return item;
     }
 
+    // never used. Why? Dont ask me.
     public static Scene leagueInput() {
         Scene scene = new Scene("LeagueInput", leagueInput().getSceneIndex().intValue() + 1);
         leagueController.getSceneList(getSceneListResponse -> {
@@ -137,6 +142,9 @@ public class obshelper {
 
     public void updateWebSource(String scene) {
         // update BrowserSource
+
+        // i genunely found out why this isnt working.
+        // IMPLEMENT THE DAMN 5.X CHANGES HOLY FUCK
 
     }
 
