@@ -4,6 +4,7 @@ import io.obswebsocket.community.client.OBSRemoteController;
 import io.obswebsocket.community.client.OBSRemoteControllerBuilder;
 import io.obswebsocket.community.client.model.Scene;
 import io.obswebsocket.community.client.model.SceneItem;
+import org.json.JSONObject;
 
 /**
  * @author https://github.com/PrincessAkira (Sarah)
@@ -13,6 +14,36 @@ import io.obswebsocket.community.client.model.SceneItem;
  */
 
 public class obshelper {
+
+    public static JSONObject jsonexample(boolean status, int id, String sceneName) {
+        JSONObject jo = new JSONObject(
+                "{{\n" +
+                        "  \"op\": 8,\n" +
+                        "  \"d\": {\n" +
+                        "    \"requests\": [\n" +
+                        "      {\n" +
+                        "        \"requestType\": \"SetSceneItemEnabled\",\n" +
+                        "        \"requestData\": {\n" +
+                        "          \"sceneName\": \"test scene\",\n" +
+                        "          \"sceneItemEnabled\": false\n" +
+                        "        },\n" +
+                        "        \"inputVariables\": {\n" +
+                        "          \"sceneItemId\": \"sceneItemIdVariable\"\n" +
+                        "        }\n" +
+                        "      }\n" +
+                        "    ]\n" +
+                        "  }\n" +
+                        "}}"
+        );
+        // replace sceneItemIdVariable with the id of the scene item
+        jo.getJSONObject("d").getJSONArray("requests").getJSONObject(0).getJSONObject("inputVariables").put("sceneItemId", id);
+        // replace test scene with the name of the scene
+        jo.getJSONObject("d").getJSONArray("requests").getJSONObject(0).getJSONObject("requestData").put("sceneName", sceneName);
+        // replace sceneItemEnabled with true or false
+        jo.getJSONObject("d").getJSONArray("requests").getJSONObject(0).getJSONObject("requestData").put("sceneItemEnabled", status);
+
+        return jo;
+    }
 
     public static int obsIndexID;
 
@@ -70,9 +101,16 @@ public class obshelper {
                 getSceneListResponse.getScenes().forEach(scene1 -> {
                     if (scene1.getSceneName().equals(FileHelper.obsscene.trim())) {
                         try {
+                            Logger.log("Toggling scene visibility...");
                             // timeout? no clue. better than callback
-                            //leagueController.setSceneItemLocked(scene1.getSceneName(), getItemID(scene1.getSceneName()), false, 10000);
-                            leagueController.setSceneItemEnabled(scene1.getSceneName(), getItemID(scene1.getSceneName()), status, 10000);
+                            /*leagueController.setSceneItemEnabled(scene1.getSceneName(), getItemID(scene1.getSceneName()), status, setSceneItemEnabledResponse ->
+                            {
+                                if (setSceneItemEnabledResponse.isSuccessful()) {
+                                    Logger.log("Scene visibility toggled!");
+                                    Logger.log("Scene visibility: " + status);
+                                }
+                            }); */
+                            Logger.log(jsonexample(status, getItemID(scene1.getSceneName()), scene1.getSceneName()).toString());
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
@@ -111,33 +149,6 @@ public class obshelper {
             }
         });
         return scene;
-    }
-
-    public static void updateItemText(String scene, SceneItem item, String replacement) {
-
-        // get the item LeagueInputText
-        leagueController.getSceneItemList(scene, getSceneItemListResponse -> {
-            if (getSceneItemListResponse.isSuccessful()) {
-                getSceneItemListResponse.getSceneItems().forEach(sceneItem -> {
-                    if (sceneItem.toString().equals("LeagueInputText")) {
-                        item.setSourceName("LeagueInputText");
-                        item.toString().replace(item.toString(), replacement);
-                    }
-                });
-            }
-        });
-
-        // idk no way to update text yet?
-      /*  leagueController.getInputPropertiesListPropertyItems(scene, item.toString(), getInputPropertiesListPropertyItemsResponse -> {
-                // change text property to whatever
-                if(getInputPropertiesListPropertyItemsResponse.isSuccessful()) {
-                    getInputPropertiesListPropertyItemsResponse.getPropertyItems().forEach(propertyItem -> {
-                        if(propertyItem.getItemName().equals("text")) {
-                            propertyItem.getItemValue().replace(propertyItem.getItemValue(), replacement);
-                        }
-                    });
-                }
-        }); */
     }
 
     public void updateWebSource(String scene) {

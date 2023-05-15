@@ -278,11 +278,11 @@ public class FileHelper {
         if (!textfile.exists()) {
             textfile.createNewFile();
         }
-        obshelper.toggleSceneVisibility(true);
+        obshelper.toggleSceneVisibility(false);
         // remove old text from file and replace with new text
         FileWriter fileWriter = new FileWriter(textfile, false);
         // remove excessive whitespaces
-        fileWriter.write(text = text.replaceAll("\\s+", " ").trim() + " ");
+        fileWriter.write(text.replaceAll("\\s+", " ").trim() + " ");
         fileWriter.flush();
         fileWriter.close();
         // this should work in theory, but it doesn't
