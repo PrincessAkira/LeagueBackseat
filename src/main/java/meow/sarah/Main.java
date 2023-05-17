@@ -51,9 +51,7 @@ public class Main {
             System.exit(0);
         }
         try {
-            //obshelper.leagueController.connect();
-            Logger.log("Pretend OBS is here. Thanks");
-            // i hope the obs java websocket folks fix their fucking shit
+            obshelper.leagueController.connect();
         } catch (Exception e) {
             Logger.log("Failed to connect to OBS!");
             System.exit(0);

@@ -17,6 +17,7 @@ public class FileHelper {
     public static String authkey;
     public static String clientid;
     public static String clientsecret;
+    public static String refreshtoken;
     public static String channel;
     public static String owner;
     public static String obsscene;
@@ -34,7 +35,8 @@ public class FileHelper {
         clientid = jsonObject.getString("clientid");
         clientsecret = jsonObject.getString("secret");
         obsscene = jsonObject.getString("obsscene");
-        if (prefix == null || authkey == null || channel == null || owner == null || clientid == null || clientsecret == null || obsscene == null) {
+        refreshtoken = jsonObject.getString("refreshtoken");
+        if (prefix == null || authkey == null || channel == null || owner == null || clientid == null || clientsecret == null || obsscene == null || refreshtoken == null) {
             Logger.log("Config file not found!");
             System.exit(0);
         }
