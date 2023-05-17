@@ -274,21 +274,45 @@ public class FileHelper {
         }
     }
 
-    public static void writeOBSFile(String text) throws IOException {
+    static Thread thread = new Thread(() -> {
+        obshelper.isRunning = true;
+        // toggle scene visibility to false
+        // wait for 3seconds
+        try {
+            obshelper.toggleSceneVisibility(false);
+            Thread.sleep(2000);
+            // toggle scene visibility to true
+            obshelper.toggleSceneVisibility(true);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        obshelper.isRunning = false;
+        return;
+    });
 
+    public static void writeOBSFile(String text) throws IOException {
+        // create file if it doesn't exist
         File textfile = new File("obs.txt");
         if (!textfile.exists()) {
             textfile.createNewFile();
         }
-        obshelper.toggleSceneVisibility(false);
         // remove old text from file and replace with new text
         FileWriter fileWriter = new FileWriter(textfile, false);
-        // remove excessive whitespaces
         fileWriter.write(text.replaceAll("\\s+", " ").trim() + " ");
+        // add new line on text that is too long
+        if (text.length() > 50) {
+            fileWriter.write("\n");
+        }
         fileWriter.flush();
         fileWriter.close();
-        // this should work in theory, but it doesn't
-        obshelper.toggleSceneVisibility(true);
+        // run thread if thread before finished
+    }
+
+    public void startThread() {
+        if (!thread.isAlive()) {
+            thread.start();
+            Logger.log("Thread started!");
+        }
     }
 
     public static int getBackseatCount() {

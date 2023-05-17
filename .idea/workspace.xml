@@ -4,10 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="0286b958-4aca-4e77-8fc7-f9d51062bcf7" name="Changes" comment="push insanity from yesterday">
+    <list default="true" id="0286b958-4aca-4e77-8fc7-f9d51062bcf7" name="Changes" comment="try suggestion">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/meow/sarah/FileHelper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/meow/sarah/FileHelper.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/meow/sarah/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/meow/sarah/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/meow/sarah/Helper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/meow/sarah/Helper.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/meow/sarah/obshelper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/meow/sarah/obshelper.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -140,7 +140,8 @@
       <workItem from="1684141489370" duration="5454000" />
       <workItem from="1684164667001" duration="2000" />
       <workItem from="1684165751988" duration="534000" />
-      <workItem from="1684339633934" duration="314000" />
+      <workItem from="1684339633934" duration="2777000" />
+      <workItem from="1684345388700" duration="1155000" />
     </task>
     <task id="LOCAL-00001" summary="I hate my life">
       <created>1683937668600</created>
@@ -268,7 +269,14 @@
       <option name="project" value="LOCAL" />
       <updated>1684145022010</updated>
     </task>
-    <option name="localTasksCounter" value="19" />
+    <task id="LOCAL-00019" summary="try suggestion">
+      <created>1684340127313</created>
+      <option name="number" value="00019" />
+      <option name="presentableId" value="LOCAL-00019" />
+      <option name="project" value="LOCAL" />
+      <updated>1684340127313</updated>
+    </task>
+    <option name="localTasksCounter" value="20" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -300,7 +308,8 @@
     <MESSAGE value="Add search command for everyone" />
     <MESSAGE value="Start obs websocket implementation" />
     <MESSAGE value="push insanity from yesterday" />
-    <option name="LAST_COMMIT_MESSAGE" value="push insanity from yesterday" />
+    <MESSAGE value="try suggestion" />
+    <option name="LAST_COMMIT_MESSAGE" value="try suggestion" />
     <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="true" />
     <option name="REFORMAT_BEFORE_PROJECT_COMMIT" value="true" />
     <option name="REARRANGE_BEFORE_PROJECT_COMMIT" value="true" />

@@ -16,6 +16,8 @@ import io.obswebsocket.community.client.model.SceneItem;
 
 public class obshelper {
 
+    public static boolean isRunning = false;
+
     static OBSRemoteController leagueController = new OBSRemoteControllerBuilder()
             .host("localhost")
             .lifecycle()
@@ -66,7 +68,7 @@ public class obshelper {
             getSceneListResponse.getScenes().forEach(scene1 -> {
                 if (scene1.getSceneName().equals(FileHelper.obsscene.trim())) {
                     try {
-                        leagueController.setSceneItemEnabled("LeagueInput", getItemID(scene1.getSceneName()), status, 10000);
+                        leagueController.setSceneItemEnabled(scene1.getSceneName(), getItemID(scene1.getSceneName()), status, 100);
                     } catch (Exception e) {
                         e.printStackTrace();
                     }

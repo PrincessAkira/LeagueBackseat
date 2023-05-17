@@ -10,6 +10,9 @@ public class Helper {
     public static String channel = FileHelper.channel;
 
     public static void messageEvent(ChannelMessageEvent event, TwitchClient twitchClient, String currentPath) throws IOException {
+        while (obshelper.isRunning) {
+            Logger.log("Waiting for OBS to be ready...");
+        }
         //Logger.log(event.getUser().getName() + ": " + event.getMessage());
         FileHelper fileHelper = new FileHelper();
         String message = event.getMessage();
@@ -45,6 +48,7 @@ public class Helper {
             }
             try {
                 FileHelper.writeFile(stringBuilder.toString(), currentPath, time, mention);
+                FileHelper.thread.run();
             } catch (IOException e) {
                 e.printStackTrace();
             }
