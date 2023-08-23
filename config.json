@@ -2,9 +2,9 @@
   "prefix" : "prefixhere",
   "token" : "tokenhere",
   "channel" : "channelhere"
-    "admin" : "ur id here"
-    "secret" : "secret here"
-    "clientid" : "client id here"
-    "obsscene" : "name here"
-    "refreshtoken" : "refresh token here"
+  "admin" : "ur id here"
+  "secret" : "secret here"
+  "clientid" : "client id here"
+  "obsscene" : "name here"
+  "refreshtoken" : "refresh token here"
 }
