@@ -14,7 +14,7 @@ This is a TwitchBot that allows viewers to Backseat the streamer.
 
 ## Commands
 | Command | Description |
-| ------- | ----------- |
+| --- | --- |
 | `!add <timestamp> <message>` | Adds a message to the queue.|
 | `!info` | Shows the message at the given timestamp.|
 | `!next` | Enters next session file.|
@@ -24,7 +24,7 @@ This is a TwitchBot that allows viewers to Backseat the streamer.
 
 ## config.json explanation
 | JSON key and value | Description |
-| ------------------ | ----------- | 
+| --- | --- | 
 | `"prefix" : "prefixhere"` | Here you can set your prefix, for example if you wanna use ! or - at the beginning of the command.|
 | `"token" : "tokenhere"` | Here you need to enter the Twitch Token, the token can be created [here](https://twitchtokengenerator.com/).|
 | `"channel" : "channelhere"` | Here you need to enter the name of your Twitch channel that you are streaming on. <br> |
