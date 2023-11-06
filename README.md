@@ -8,6 +8,7 @@ This is a TwitchBot that allows viewers to Backseat the streamer.
 
 - Install Java (17 preferred)
 - Download the latest release from Releases
+- Rename `config.json.example` to `config.json`
 - Edit the `config.json` file to your liking
 - Run the jar file with `java -jar LeagueBackseat.jar`
 - Get roasted by your Viewers
