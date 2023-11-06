@@ -27,6 +27,7 @@ public class FileHelper {
     private static int sessionCount = 1;
 
     public static void loadFile(String currentPath) throws IOException {
+        Logger.log("Loading config file...");
         JSONObject jsonObject = readJsonObject(currentPath + "/config.json");
         prefix = jsonObject.getString("prefix");
         authkey = jsonObject.getString("token");
@@ -45,6 +46,7 @@ public class FileHelper {
 
     public static File getFile(String currentPath) {
         File folder = new File(currentPath + "/output/" + Main.date);
+        Logger.log("Looking for file in " + folder.getAbsolutePath());
         File[] files = folder.listFiles(file -> file.getName().endsWith(".json") && file.getName().equals("Session-" + fileCount + ".json"));
         return (files != null && files.length > 0) ? files[0] : null;
     }
@@ -123,7 +125,7 @@ public class FileHelper {
                     if (content.matches(".*\\b" + search + "\\b.*")) {
                         messageCount++;
                         map.put(content, messageCount);
-                        Logger.log("Found \"" + search + "\" in message " + messageCount + " = \"" + content + "\"");
+                        //Logger.log("Found \"" + search + "\" in message " + messageCount + " = \"" + content + "\"");
                     }
                 }
             }
@@ -143,12 +145,13 @@ public class FileHelper {
     }
 
     public static String searchUserInput(String user, String search) throws IOException {
-        Logger.log("Searching for \"" + search + "\" in the current session...");
+        //Logger.log("Searching for \"" + search + "\" in the current session...");
         File file = getFile(new java.io.File(".").getCanonicalPath());
         int messageCount = 0;
 
         if (file != null) {
-            String fileContent = Files.readString(Paths.get(file.getAbsolutePath()), StandardCharsets.UTF_8);
+            String fileContent;
+            fileContent = Files.readString(Paths.get(file.getAbsolutePath()), StandardCharsets.UTF_8);
             // if file is empty, return
             if (fileContent.isEmpty()) {
                 return "Nothing was added to the current session yet!";
@@ -175,12 +178,11 @@ public class FileHelper {
                 return "User " + user + " has no messages in the current session!";
             }
 
-            StringBuilder resultBuilder = new StringBuilder();
-            for (Map.Entry<String, Integer> entry : map.entrySet()) {
-                String content = entry.getKey();
-                int count = entry.getValue();
+            var resultBuilder = new StringBuilder();
+            map.forEach((content, value) -> {
+                int count = value;
                 resultBuilder.append("Result ").append(count).append(" = \"").append(content).append("\"").append(System.lineSeparator()).append("  ");
-            }
+            });
             return resultBuilder.toString();
         }
         return "No file found!";
@@ -221,16 +223,12 @@ public class FileHelper {
         if (!folder.exists()) {
             folder.mkdirs();
         }
-
         File[] files = folder.listFiles(file -> !file.getName().endsWith(".json"));
         if (files != null && files.length > 0 && !Main.firstRun) {
             fileCount += files.length;
         }
         Main.firstRun = true;
-        //Logger.log(fileCount + " : Count");
-
         File file = new File(folder, "Session-" + fileCount + ".txt");
-
         String content2 = content;
 
         JSONObject data = new JSONObject();
@@ -246,10 +244,10 @@ public class FileHelper {
         writeOBSFile(user.trim() + " - " + content2);
 
         try {
+
             File jsonFile = new File(folder, "Session-" + fileCount + ".json");
-            if (!jsonFile.exists()) {
-                jsonFile.createNewFile();
-            } else {
+
+            if (jsonFile.exists()) {
                 String existingData = Files.readString(Paths.get(jsonFile.getAbsolutePath()));
                 if (!existingData.isEmpty()) {
                     JSONObject existingJson = new JSONObject(existingData);
@@ -261,6 +259,7 @@ public class FileHelper {
             jsonWriter.write(data.toString());
             jsonWriter.flush();
             jsonWriter.close();
+
         } catch (Exception e) {
             Logger.log("Failed to write to JSON file!");
         }
@@ -293,9 +292,6 @@ public class FileHelper {
     public static void writeOBSFile(String text) throws IOException {
         // create file if it doesn't exist
         File textfile = new File("obs.txt");
-        if (!textfile.exists()) {
-            textfile.createNewFile();
-        }
         // remove old text from file and replace with new text
         FileWriter fileWriter = new FileWriter(textfile, false);
         fileWriter.write(text.replaceAll("\\s+", " ").trim() + " ");
@@ -306,13 +302,6 @@ public class FileHelper {
         fileWriter.flush();
         fileWriter.close();
         // run thread if thread before finished
-    }
-
-    public void startThread() {
-        if (!thread.isAlive()) {
-            thread.start();
-            Logger.log("Thread started!");
-        }
     }
 
     public static int getBackseatCount() {

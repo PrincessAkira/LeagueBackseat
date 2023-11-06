@@ -28,27 +28,6 @@ public class obshelper {
     public static void init() {
         Logger.log("Connected to OBS!");
     }
-
-    public static void checkScene() {
-        // if there is no scene with the name "League", create one
-        leagueController.getSceneList(getSceneListResponse -> {
-            // check if there is a scene named LeagueInput
-            if (getSceneListResponse.isSuccessful()) {
-                // Print each Scene
-                getSceneListResponse.getScenes().forEach(scene -> {
-                    if (!scene.getSceneName().equals("LeagueInput")) {
-                        leagueController.createScene("LeagueInput", createSceneResponse -> {
-                            if (createSceneResponse.isSuccessful()) {
-                                System.out.println("Scene created!");
-                            }
-                        });
-                    }
-                });
-            }
-        });
-    }
-
-    // yeah this is dirty, but it works so idc
     public static Integer getItemID(String scene) {
         GetSceneItemListResponse getSceneItemListResponse = leagueController.getSceneItemList(scene, 10_000);
         if (getSceneItemListResponse.isSuccessful()) {

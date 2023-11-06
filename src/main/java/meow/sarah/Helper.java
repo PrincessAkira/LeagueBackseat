@@ -11,7 +11,7 @@ public class Helper {
 
     public static void messageEvent(ChannelMessageEvent event, TwitchClient twitchClient, String currentPath) throws IOException {
         while (obshelper.isRunning) {
-            Logger.log("Waiting for OBS to be ready...");
+            // do nothing until obs is connected
         }
         //Logger.log(event.getUser().getName() + ": " + event.getMessage());
         FileHelper fileHelper = new FileHelper();
@@ -30,6 +30,14 @@ public class Helper {
                 if (line.matches("\\d:\\d{2}|\\d{2}:\\d{2}|\\d{2}:\\d{1}") && !timeFound) {
                     time = line;
                     timeFound = true;
+
+                    // split time on : and check if second number is between 0 and 60 and not longer than 2 digits
+                    String[] timeSplit = time.split(":");
+                    if (Integer.parseInt(timeSplit[1]) > 60 || timeSplit[1].length() > 2) {
+                        twitchClient.getChat().sendMessage(channel, mention + "Try again with a valid timestamp! (e.g 2:15 - message)");
+                        return;
+                    }
+
                     //Logger.log("Found time " + time);
                     stringBuilder.insert(0, mention + " noticed on " + time + " : \n");
                 } else if (line.matches(prefix + "add")) {
@@ -67,7 +75,7 @@ public class Helper {
             twitchClient.getChat().sendMessage(channel, FileHelper.getInput(Integer.parseInt(arguments[1])));
             //Logger.log(event.getUser().getName() + " searched for " + arguments[1].toLowerCase());
         } else if (message.startsWith(prefix + "searchuser")) {
-            //Logger.log(String.valueOf(twitchClient.getChat().sendMessage(channel, FileHelper.searchUserInput(event.getMessage().split(" ")[1].toLowerCase(), arguments[2]))));
+            //Logger.log(String.valueOf(twitchClient.getChat().sendMessage(channel,FileHelper.searchUserInput(event.getMessage().split(" ")[1].toLowerCase(), arguments[2]))));
             twitchClient.getChat().sendMessage(channel, FileHelper.searchUserInput(event.getMessage().split(" ")[1].toLowerCase(), arguments[2]));
         } else if (message.startsWith(prefix + "listuser")) {
             twitchClient.getChat().sendMessage(channel, FileHelper.listUserInputSize(arguments[1].toLowerCase()));
