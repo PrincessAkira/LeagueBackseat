@@ -10,6 +10,7 @@ import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.concurrent.CompletableFuture;
 
 public class FileHelper {
 
@@ -189,28 +190,27 @@ public class FileHelper {
     }
 
 
-    public static String getInput(int id) throws IOException {
-        // getFile returns a File object, which is then passed to readString
-        File file = getFile(new java.io.File(".").getCanonicalPath());
-        if (file != null) {
+    public static CompletableFuture<String> getInputAsync(int id) {
+        return CompletableFuture.supplyAsync(() -> {
             try {
-                String json = Files.readString(Paths.get(file.getAbsolutePath()));
-                // if file is empty, return
-                if (json.isEmpty()) {
-                    return "Nothing was added to the current session yet!";
+                File file = getFile(new java.io.File(".").getCanonicalPath());
+                if (file != null) {
+                    String json = Files.readString(Paths.get(file.getAbsolutePath()));
+                    if (json.isEmpty()) {
+                        return "Nothing was added to the current session yet!";
+                    }
+                    JSONObject jsonObject = new JSONObject(json);
+                    JSONObject backseat = jsonObject.getJSONObject("backseat" + id);
+                    String time = backseat.getString("time");
+                    String user = backseat.getString("user");
+                    String content = backseat.getString("content");
+                    return user + " said this at " + time + ":\n" + content;
                 }
-                JSONObject jsonObject = new JSONObject(json);
-                JSONObject backseat = jsonObject.getJSONObject("backseat" + id);
-                String time = backseat.getString("time");
-                String user = backseat.getString("user");
-                String content = backseat.getString("content");
-                //Logger.log("Time: " + time + " User: " + user + " Content: " + content);
-                return user + " said this at " + time + ":\n" + content;
-            } catch (Exception e) {
+            } catch (IOException e) {
                 Logger.log("Failed to read JSON file!");
             }
-        }
-        return "No input found!";
+            return "No input found!";
+        });
     }
 
     private static JSONObject readJsonObject(String filePath) throws IOException {
