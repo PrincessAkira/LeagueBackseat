@@ -4,9 +4,8 @@ import com.github.twitch4j.TwitchClient;
 import com.github.twitch4j.chat.events.channel.ChannelMessageEvent;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.concurrent.CompletableFuture;
-
-import static meow.sarah.FileHelper.getInputAsync;
 
 public class Helper {
 
@@ -56,10 +55,15 @@ public class Helper {
         StringBuilder stringBuilder = new StringBuilder();
         String time = "";
         boolean timeFound = false;
+        Logger.log("Arguments: " + arguments.length);
+        Logger.log("Arguments: " + Arrays.toString(arguments));
         for (String line : arguments) {
             // if string contains \d:\d{2}|\d{2}:\d{2}|\d{2}:\d{1}
             // those 30h a week of regex paid off.
+            Logger.log(line.matches("\\d:\\d{2}|\\d{2}:\\d{2}|\\d{2}:\\d{1}") + " " + line);
             if (line.matches("\\d:\\d{2}|\\d{2}:\\d{2}|\\d{2}:\\d{1}") && !timeFound) {
+                Logger.log("Found time!");
+                Logger.log("Line: " + line);
                 time = line;
                 timeFound = true;
 
@@ -70,11 +74,9 @@ public class Helper {
                     return;
                 }
 
-                //Logger.log("Found time " + time);
+                Logger.log("Found time " + time);
                 stringBuilder.insert(0, mention + " noticed on " + time + " : \n");
-            } else if (line.matches(prefix + "add")) {
-                continue;
-            } else {
+            } else if (!line.startsWith(prefix + "add")) {
                 stringBuilder.append(line).append(" ");
             }
         }
@@ -115,11 +117,10 @@ public class Helper {
     }
 
     public static void handleGetCommand(ChannelMessageEvent event, TwitchClient twitchClient, String[] arguments, String mention) {
-        CompletableFuture<String> future = getInputAsync(Integer.parseInt(arguments[1]));
+        CompletableFuture<String> messageFuture = FileHelper.getInput(Integer.parseInt(arguments[1]));
+        messageFuture.thenApply(message -> {
+            return twitchClient.getChat().sendMessage(channel, message);
 
-        future.thenAccept(result -> {
-            // Send the result to the chat
-            twitchClient.getChat().sendMessage(channel, result);
         });
     }
 
