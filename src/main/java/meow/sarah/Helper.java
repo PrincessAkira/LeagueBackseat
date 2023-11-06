@@ -27,13 +27,13 @@ public class Helper {
         String prefix = FileHelper.prefix;
 
         if (message.startsWith(prefix + "add")) {
-            Logger.log("Add command received!");
             handleAddCommand(event, twitchClient, currentPath, arguments, mention, prefix);
         } else if (message.startsWith(prefix + "info")) {
             twitchClient.getChat().sendMessage(channel, mention + "This allows you to backseat by typing a timestamp and what you want to backseat with !add <timestamp> <message>");
         } else if (message.startsWith(prefix + "next") && FileHelper.owner.equals(event.getUser().getId())) {
             handleNextCommand(event, twitchClient, mention, fileHelper);
         } else if (message.startsWith(prefix + "get")) {
+            Logger.log(Arrays.toString(arguments));
             handleGetCommand(event, twitchClient, arguments, mention);
         } else if (message.startsWith(prefix + "searchuser")) {
             handleSearchUserCommand(twitchClient, arguments, mention);
@@ -50,20 +50,15 @@ public class Helper {
 
     private static void handleAddCommand(ChannelMessageEvent event, TwitchClient twitchClient, String currentPath,
                                          String[] arguments, String mention, String prefix) throws IOException {
+        Logger.log(Arrays.toString(arguments));
         // create a string builder, so we can append the lines
-        Logger.log("Add command received!");
         StringBuilder stringBuilder = new StringBuilder();
         String time = "";
         boolean timeFound = false;
-        Logger.log("Arguments: " + arguments.length);
-        Logger.log("Arguments: " + Arrays.toString(arguments));
         for (String line : arguments) {
             // if string contains \d:\d{2}|\d{2}:\d{2}|\d{2}:\d{1}
             // those 30h a week of regex paid off.
-            Logger.log(line.matches("\\d:\\d{2}|\\d{2}:\\d{2}|\\d{2}:\\d{1}") + " " + line);
             if (line.matches("\\d:\\d{2}|\\d{2}:\\d{2}|\\d{2}:\\d{1}") && !timeFound) {
-                Logger.log("Found time!");
-                Logger.log("Line: " + line);
                 time = line;
                 timeFound = true;
 
@@ -73,28 +68,24 @@ public class Helper {
                     twitchClient.getChat().sendMessage(channel, mention + "Try again with a valid timestamp! (e.g 2:15 - message)");
                     return;
                 }
-
-                Logger.log("Found time " + time);
                 stringBuilder.insert(0, mention + " noticed on " + time + " : \n");
             } else if (!line.startsWith(prefix + "add")) {
                 stringBuilder.append(line).append(" ");
             }
         }
-        if (stringBuilder.substring(stringBuilder.indexOf("\n") + 1).trim().length() < 1) {
+        if (stringBuilder.substring(stringBuilder.indexOf("\n") + 1).trim().length() < 1 || !timeFound) {
             twitchClient.getChat().sendMessage(channel, mention + "Try again with a message! (e.g 2:15 - message)");
-            return;
-        }
-        if (!timeFound) {
-            twitchClient.getChat().sendMessage(channel, mention + "Try again with a timestamp! (e.g 2:15 - message)");
             return;
         }
         try {
             FileHelper.writeFile(stringBuilder.toString(), currentPath, time, mention);
-            FileHelper.thread.start();
+            if (obshelper.isRunning) {
+                FileHelper.thread.start();
+                Logger.log(FileHelper.thread.isAlive() + " " + FileHelper.thread.getState());
+            }
         } catch (IOException e) {
             e.printStackTrace();
             // stop the thread
-            FileHelper.thread.interrupt();
         }
         twitchClient.getChat().sendMessage(channel, mention + "backseat added to List!");
     }
@@ -118,10 +109,7 @@ public class Helper {
 
     public static void handleGetCommand(ChannelMessageEvent event, TwitchClient twitchClient, String[] arguments, String mention) {
         CompletableFuture<String> messageFuture = FileHelper.getInput(Integer.parseInt(arguments[1]));
-        messageFuture.thenApply(message -> {
-            return twitchClient.getChat().sendMessage(channel, message);
-
-        });
+        messageFuture.thenApply(message -> twitchClient.getChat().sendMessage(channel, message));
     }
 
     private static void handleSearchUserCommand(TwitchClient twitchClient, String[] arguments, String mention) {
