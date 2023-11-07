@@ -13,12 +13,13 @@ This is a TwitchBot that allows viewers to Backseat the streamer.
 - Run the jar file with `java -jar LeagueBackseat.jar`
 - Get roasted by your Viewers
 
-## How to build the project to help with the development
+## How to setup the project to help with the development
 ### IntelliJ IDEA
 1. Open **IntelliJ IDEA**.
 2. Select **Open**.
 3. Locate the **LeagueBackseat** folder, select it and press **OK**.
 4. Go to **File->Project Structure** and under **Project** select **JDK 17** as the current SDK.
+5. The project should now have no issues when trying to build it.
 
 ## Commands
 | Command | Description |
