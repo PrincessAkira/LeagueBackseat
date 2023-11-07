@@ -15,8 +15,6 @@ import static meow.sarah.FileHelper.*;
 /**
  * @author https://github.com/PrincessAkira (Sarah)
  * Today is the 5/12/2023 @7:08 PM
- * This project is named Default (Template) Project
- * @description
  */
 public class Main {
 
