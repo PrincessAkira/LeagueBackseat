@@ -19,7 +19,9 @@ This is a TwitchBot that allows viewers to Backseat the streamer.
 2. Select **Open**.
 3. Locate the **LeagueBackseat** folder, select it and press **OK**.
 4. Go to **File->Project Structure** and under **Project** select **JDK 17** as the current SDK.
-5. The project should now have no issues when trying to build it.
+5. Open the **Maven Tool Window**
+6. Click on **Lifecycle->Install**
+7. After Maven completed the installation the project should now have no issues when trying to build it.
 
 ## Commands
 | Command | Description |
