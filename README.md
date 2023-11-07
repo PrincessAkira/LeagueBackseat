@@ -20,12 +20,6 @@ This is a TwitchBot that allows viewers to Backseat the streamer.
 3. Locate the **LeagueBackseat** folder, select it and press **OK**.
 4. Go to **File->Project Structure** and under **Project** select **JDK 17** as the current SDK.
 
-## Possible Issues
-### Class not found in module
-Should you by any chance occur the issue `Class not found in module` follow these steps to fix it:
-1. Go to **File->Project Structure**
-2. Under **Modules** remove the exisiting Content Root and add it back again pointing to the correct location.
-
 ## Commands
 | Command | Description |
 | --- | --- |
