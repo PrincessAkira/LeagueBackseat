@@ -14,26 +14,28 @@ This is a TwitchBot that allows viewers to Backseat the streamer.
 - Get roasted by your Viewers
 
 ## Commands
-| Command | Description |
-| --- | --- |
-| `!add <timestamp> <message>` | Adds a message to the queue.|
-| `!info` | Shows the message at the given timestamp.|
-| `!next` | Enters next session file.|
-| `!list <@user>` | Gets a number of how many Backseats the user has added in the current session.|
-| `!searchall <IndexID>` | Searches current Session for the given IndexID.|
-| `!searchuser <@user> <Keyword>` | Searches current Session for the given Keyword and User and returns every message with keyword from that user.|
+
+| Command                         | Description                                                                                                    |
+|---------------------------------|----------------------------------------------------------------------------------------------------------------|
+| `!add <timestamp> <message>`    | Adds a message to the queue.                                                                                   |
+| `!info`                         | Shows the message at the given timestamp.                                                                      |
+| `!next`                         | Enters next session file.                                                                                      |
+| `!list <@user>`                 | Gets a number of how many Backseats the user has added in the current session.                                 |
+| `!searchall <IndexID>`          | Searches current Session for the given IndexID.                                                                |
+| `!searchuser <@user> <Keyword>` | Searches current Session for the given Keyword and User and returns every message with keyword from that user. |
 
 ## config.json explanation
-| JSON key and value | Description |
-| --- | --- | 
-| `"prefix" : "prefixhere"` | Here you can set your prefix, for example if you wanna use ! or - at the beginning of the command.|
-| `"token" : "tokenhere"` | Here you need to enter the Twitch Token, the token can be created [here](https://twitchtokengenerator.com/).|
-| `"channel" : "channelhere"` | Here you need to enter the name of your Twitch channel that you are streaming on. <br> |
-| `"admin" : "ur id here"` | Here you have to enter the ID of your Twitch account where you stream on. You can convert your Twitch Username to Twitch Channel ID [here](https://www.streamweasels.com/tools/convert-twitch-username-to-user-id/).|
-| `"secret" : "secret here"` | To receive the client secret you need to follow through this [documentation](https://dev.twitch.tv/docs/authentication/register-app/) from Twitch.|
-| `"clientid" : "client id here"` | To receive the client id you need to follow through this [documentation](https://dev.twitch.tv/docs/authentication/register-app/) from Twitch.|
-| `"obsscene" : "name here"` | Here you will have to enter the name of your scene in OBS.|
-| `"refreshtoken" : "refresh token here"` | Your refresh token will also be generated when you completed creating your token [here](https://twitchtokengenerator.com/).|
+
+| JSON key and value                      | Description                                                                                                                                                                                                          |
+|-----------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------| 
+| `"prefix" : "prefixhere"`               | Here you can set your prefix, for example if you wanna use ! or - at the beginning of the command.                                                                                                                   |
+| `"token" : "tokenhere"`                 | Here you need to enter the Twitch Token, the token can be created [here](https://twitchtokengenerator.com/).                                                                                                         |
+| `"channel" : "channelhere"`             | Here you need to enter the name of your Twitch channel that you are streaming on. <br>                                                                                                                               |
+| `"admin" : "ur id here"`                | Here you have to enter the ID of your Twitch account where you stream on. You can convert your Twitch Username to Twitch Channel ID [here](https://www.streamweasels.com/tools/convert-twitch-username-to-user-id/). |
+| `"secret" : "secret here"`              | To receive the client secret you need to follow through this [documentation](https://dev.twitch.tv/docs/authentication/register-app/) from Twitch.                                                                   |
+| `"clientid" : "client id here"`         | To receive the client id you need to follow through this [documentation](https://dev.twitch.tv/docs/authentication/register-app/) from Twitch.                                                                       |
+| `"obsscene" : "name here"`              | Here you will have to enter the name of your scene in OBS.                                                                                                                                                           |
+| `"refreshtoken" : "refresh token here"` | Your refresh token will also be generated when you completed creating your token [here](https://twitchtokengenerator.com/).                                                                                          |
 
 ## TODO
 

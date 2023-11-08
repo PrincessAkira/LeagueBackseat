@@ -28,6 +28,7 @@ public class obshelper {
     public static void init() {
         Logger.log("Connected to OBS!");
     }
+
     public static Integer getItemID(String scene) {
         GetSceneItemListResponse getSceneItemListResponse = leagueController.getSceneItemList(scene, 10_000);
         if (getSceneItemListResponse.isSuccessful()) {
