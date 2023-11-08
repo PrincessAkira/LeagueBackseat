@@ -44,7 +44,6 @@ public class FileHelper {
             exception.printStackTrace();
         }
         obshelper.isRunning = false;
-        return;
     });
 
     private static int fileCount = 1;
@@ -115,8 +114,12 @@ public class FileHelper {
                 final String fileContent = Files.readString(Paths.get(file.getAbsolutePath()), StandardCharsets.UTF_8);
                 if (fileContent.isEmpty()) return "Nothing was added to the current session yet!";
 
-                final int messageCount = new JSONObject(fileContent).keySet().stream().filter(key -> !key.startsWith("backseat")).toList().size();
-                return "There are" + (messageCount == 0 ? "no" : messageCount) + " backseat messages in the current session!";
+                Logger.log("Listing all backseat messages in the current session...");
+
+                final int messageCount = new JSONObject(fileContent).keySet().stream().filter(key -> key.startsWith("backseat")).toList().size();
+                return "There are " + (messageCount == 0 ? "no" : messageCount) + " backseat messages in the current" +
+                        " " +
+                        "session!";
             } catch (final Throwable throwable) {
                 if (onError != null) onError.accept(throwable);
                 return "No file found! (with errors)";

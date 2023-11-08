@@ -36,11 +36,11 @@ public class Helper {
             Logger.log(Arrays.toString(arguments));
             handleGetCommand(event, twitchClient, arguments, mention);
         } else if (message.startsWith(prefix + "searchuser")) {
-            handleSearchUserCommand(twitchClient, arguments, mention);
+            handleSearchUserCommand(twitchClient, arguments, mention, event);
         } else if (message.startsWith(prefix + "listuser")) {
             handleListUserCommand(twitchClient, arguments, mention);
         } else if (message.startsWith(prefix + "list")) {
-            handleListAllCommand(twitchClient, mention);
+            handleListAllCommand(twitchClient);
         } else if (message.startsWith(prefix + "searchall")) {
             handleSearchAllCommand(twitchClient, arguments, mention);
         } else if (message.startsWith(prefix)) {
@@ -48,9 +48,7 @@ public class Helper {
         }
     }
 
-    private static void handleAddCommand(ChannelMessageEvent event, TwitchClient twitchClient, String currentPath,
-                                         String[] arguments, String mention, String prefix) throws IOException {
-        Logger.log(Arrays.toString(arguments));
+    private static void handleAddCommand(ChannelMessageEvent event, TwitchClient twitchClient, String currentPath, String[] arguments, String mention, String prefix) throws IOException {
         // create a string builder, so we can append the lines
         StringBuilder stringBuilder = new StringBuilder();
         String time = "";
@@ -112,20 +110,26 @@ public class Helper {
         messageFuture.thenApply(message -> twitchClient.getChat().sendMessage(channel, message));
     }
 
-    private static void handleSearchUserCommand(TwitchClient twitchClient, String[] arguments, String mention) {
-        // Your 'searchuser' command logic
+    private static void handleSearchUserCommand(TwitchClient twitchClient, String[] arguments, String mention, ChannelMessageEvent event) {
+        CompletableFuture<String> messageFuture = FileHelper.searchUserInput(event.getMessage().split(" ")[1].toLowerCase(), arguments[2]);
+        messageFuture.thenApply(message -> twitchClient.getChat().sendMessage(channel, message));
     }
 
     private static void handleListUserCommand(TwitchClient twitchClient, String[] arguments, String mention) {
-        // Your 'listuser' command logic
+        CompletableFuture<String> messageFuture = FileHelper.listUserInputSize(mention, Throwable::printStackTrace);
+        messageFuture.thenApply(message -> twitchClient.getChat().sendMessage(channel, message));
     }
 
-    private static void handleListAllCommand(TwitchClient twitchClient, String mention) {
-        // Your 'list' command logic
+
+    private static void handleListAllCommand(TwitchClient twitchClient) {
+        CompletableFuture<String> messageFuture = FileHelper.listAll(Throwable::printStackTrace);
+        messageFuture.thenApply(message -> twitchClient.getChat().sendMessage(channel, message));
     }
+
 
     private static void handleSearchAllCommand(TwitchClient twitchClient, String[] arguments, String mention) {
-        // Your 'searchall' command logic
+        CompletableFuture<String> messageFuture = FileHelper.searchAllInput(arguments[1], Throwable::printStackTrace);
+        messageFuture.thenApply(message -> twitchClient.getChat().sendMessage(channel, message));
     }
 
 }
