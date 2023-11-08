@@ -1,216 +1,286 @@
 package meow.sarah;
+
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.json.JSONObject;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.Consumer;
+import java.util.stream.Stream;
 
 public class FileHelper {
+    // @formatter:off
+    public static String
+            prefix       = "",
+            authKey      = "",
+            clientId     = "",
+            clientSecret = "",
+            refreshToken = "",
+            channel      = "",
+            owner        = "",
+            obsScene     = "";
+    // @formatter:on
 
-    public static String prefix;
-    public static String authkey;
-    public static String clientid;
-    public static String clientsecret;
-    public static String refreshtoken;
-    public static String channel;
-    public static String owner;
-    public static String obsscene;
+    static Thread thread = new Thread(() -> {
+        obshelper.isRunning = true;
+        // toggle scene visibility to false
+        // wait for 3seconds
+        try {
+            obshelper.toggleSceneVisibility(false);
+            Thread.sleep(2000);
+            // toggle scene visibility to true
+            obshelper.toggleSceneVisibility(true);
+        } catch (final InterruptedException exception) {
+            exception.printStackTrace();
+        }
+        obshelper.isRunning = false;
+    });
+
     private static int fileCount = 1;
-
     private static int backseatCount = -1;
     private static int sessionCount = 1;
 
-    public static void loadFile(String currentPath) throws IOException {
-        Logger.log("Loading config file...");
-        JSONObject jsonObject = readJsonObject(currentPath + "/config.json");
-        prefix = jsonObject.getString("prefix");
-        authkey = jsonObject.getString("token");
-        channel = jsonObject.getString("channel");
-        owner = jsonObject.getString("admin");
-        clientid = jsonObject.getString("clientid");
-        clientsecret = jsonObject.getString("secret");
-        obsscene = jsonObject.getString("obsscene");
-        refreshtoken = jsonObject.getString("refreshtoken");
-        if (prefix == null || authkey == null || channel == null || owner == null || clientid == null || clientsecret == null || obsscene == null || refreshtoken == null) {
-            Logger.log("Config file not found!");
-            System.exit(0);
-        }
-        Logger.log("Loaded config file!");
-    }
+    // @formatter:off
+    public static @NotNull CompletableFuture<Void>
+    loadFile(final String currentPath) { return loadFile(currentPath, throwable -> {
+        throwable.printStackTrace();
+        System.exit(-1);
+    }); }
+    // @formatter:on
 
-    public static File getFile(String currentPath) {
-        File folder = new File(currentPath + "/output/" + Main.date);
-        Logger.log("Looking for file in " + folder.getAbsolutePath());
-        File[] files = folder.listFiles(file -> file.getName().endsWith(".json") && file.getName().equals("Session-" + fileCount + ".json"));
-        return (files != null && files.length > 0) ? files[0] : null;
-    }
-
-    public static String listAll() throws IOException {
-        File file = getFile(new java.io.File(".").getCanonicalPath());
-        int messageCount = 0;
-
-        if (file != null) {
-            String fileContent = Files.readString(Paths.get(file.getAbsolutePath()), StandardCharsets.UTF_8);
-            // if file is empty, return
-            if (fileContent.isEmpty()) {
-                return "Nothing was added to the current session yet!";
-            }
-            JSONObject jsonData = new JSONObject(fileContent);
-            for (String key : jsonData.keySet()) {
-                if (key.startsWith("backseat")) {
-                    messageCount++;
-                }
-            }
-            if (messageCount == 0) {
-                return "There are no backseat messages in the current session!";
-            }
-            return "There are " + messageCount + " backseat messages in the current session!";
-        }
-        return "No file found!";
-    }
-
-    public static String listUserInputSize(String user) throws IOException {
-        File file = getFile(new java.io.File(".").getCanonicalPath());
-        int messageCount = 0;
-
-        if (file != null) {
-            String fileContent = Files.readString(Paths.get(file.getAbsolutePath()), StandardCharsets.UTF_8);
-            // if file is empty, return
-            if (fileContent.isEmpty()) {
-                return "Nothing was added to the current session yet!";
-            }
-            JSONObject jsonData = new JSONObject(fileContent);
-            for (String key : jsonData.keySet()) {
-                if (key.startsWith("backseat")) {
-                    JSONObject backseat = jsonData.getJSONObject(key);
-                    String author = backseat.getString("user");
-                    if (Objects.equals(author, user.trim())) {
-                        messageCount++;
-                    }
-                }
-            }
-            if (messageCount == 0) {
-                return "User " + user + " has no messages in the current session!";
-            }
-            return "User " + user + " has " + messageCount + " messages in the current session!";
-        }
-        return "No file found!";
-    }
-
-    public static String searchAllInput(String search) throws IOException {
-        File file = getFile(new java.io.File(".").getCanonicalPath());
-        int messageCount = 0;
-
-        if (file != null) {
-            String fileContent = Files.readString(Paths.get(file.getAbsolutePath()), StandardCharsets.UTF_8);
-            // if file is empty, return
-            if (fileContent.isEmpty()) {
-                return "Nothing was added to the current session yet!";
-            }
-            JSONObject jsonData = new JSONObject(fileContent);
-            HashMap<String, Integer> map = new HashMap<>();
-
-            Logger.log("Searching for \"" + search + "\" in the current session...");
-
-            for (String key : jsonData.keySet()) {
-                if (key.startsWith("backseat")) {
-                    JSONObject backseat = jsonData.getJSONObject(key);
-                    String content = backseat.getString("content");
-                    if (content.matches(".*\\b" + search + "\\b.*")) {
-                        messageCount++;
-                        map.put(content, messageCount);
-                        //Logger.log("Found \"" + search + "\" in message " + messageCount + " = \"" + content + "\"");
-                    }
-                }
-            }
-            if (messageCount == 0) {
-                return "There are no messages containing \"" + search + "\" in the current session!";
-            }
-
-            StringBuilder resultBuilder = new StringBuilder();
-            for (Map.Entry<String, Integer> entry : map.entrySet()) {
-                String content = entry.getKey();
-                int count = entry.getValue();
-                resultBuilder.append("Result ").append(count).append(" = \"").append(content).append("\"").append(System.lineSeparator()).append("  ");
-            }
-            return resultBuilder.toString();
-        }
-        return "No file found!";
-    }
-
-    public static String searchUserInput(String user, String search) throws IOException {
-        //Logger.log("Searching for \"" + search + "\" in the current session...");
-        File file = getFile(new java.io.File(".").getCanonicalPath());
-        int messageCount = 0;
-
-        if (file != null) {
-            String fileContent;
-            fileContent = Files.readString(Paths.get(file.getAbsolutePath()), StandardCharsets.UTF_8);
-            // if file is empty, return
-            if (fileContent.isEmpty()) {
-                return "Nothing was added to the current session yet!";
-            }
-            JSONObject jsonData = new JSONObject(fileContent);
-            HashMap<String, Integer> map = new HashMap<>();
-
-            //Logger.log("Here are the results:");
-
-            for (String key : jsonData.keySet()) {
-                if (key.startsWith("backseat")) {
-                    JSONObject backseat = jsonData.getJSONObject(key);
-                    String content = backseat.getString("content");
-                    if (content.matches(".*\\b" + search + "\\b.*")) {
-                        String author = backseat.getString("user");
-                        if (Objects.equals(author, user.trim())) {
-                            messageCount++;
-                            map.put(content, messageCount);
-                        }
-                    }
-                }
-            }
-            if (messageCount == 0) {
-                return "User " + user + " has no messages in the current session!";
-            }
-
-            var resultBuilder = new StringBuilder();
-            map.forEach((content, value) -> {
-                int count = value;
-                resultBuilder.append("Result ").append(count).append(" = \"").append(content).append("\"").append(System.lineSeparator()).append("  ");
-            });
-            return resultBuilder.toString();
-        }
-        return "No file found!";
-    }
-
-
-    public static String getInput(int id) throws IOException {
-        // getFile returns a File object, which is then passed to readString
-        File file = getFile(new java.io.File(".").getCanonicalPath());
-        if (file != null) {
+    public static CompletableFuture<Void> loadFile(
+            final String currentPath,
+            final Consumer<Throwable> onError
+    ) {
+        return CompletableFuture.runAsync(() -> {
             try {
-                String json = Files.readString(Paths.get(file.getAbsolutePath()));
-                // if file is empty, return
-                if (json.isEmpty()) {
-                    return "Nothing was added to the current session yet!";
+                Logger.log("Loading config file...");
+                final JSONObject jsonObject = readJsonObject(String.format("%s%cconfig.json", currentPath, File.separatorChar));
+                // @formatter:off
+                if (Stream.of(
+                                prefix       = jsonObject.getString("prefix"      ),
+                                authKey      = jsonObject.getString("token"       ),
+                                channel      = jsonObject.getString("channel"     ),
+                                owner        = jsonObject.getString("admin"       ),
+                                clientId     = jsonObject.getString("clientid"    ),
+                                clientSecret = jsonObject.getString("secret"      ),
+                                obsScene     = jsonObject.getString("obsscene"    ),
+                                refreshToken = jsonObject.getString("refreshtoken")
+                        ).filter(Objects::isNull)
+                        .findAny()
+                        .orElse("__not_found__") != "__not_found__") {
+                    final String fileNotFound = "Config file not found!";
+                    Logger.log(fileNotFound);
+                    onError.accept(new FileNotFoundException(fileNotFound));
                 }
+                // @formatter:on
+                Logger.log("Loaded config file!");
+            } catch (final Throwable throwable) {
+                onError.accept(throwable);
+            }
+        });
+    }
+
+    public static @NotNull CompletableFuture<@Nullable File> getFile(final @NotNull String currentPath) {
+        return CompletableFuture.supplyAsync(() -> {
+            File folder = new File(currentPath, String.format("output%c%s", File.separatorChar, Main.date));
+            Logger.log(String.format("Looking for file in %s", folder.getAbsolutePath()));
+            File[] files = folder.listFiles(file -> file.getName().endsWith(".json") && file.getName().equals(String.format("Session-%d.json", fileCount)));
+            return (files != null && files.length != 0) ? files[0] : null;
+        });
+    }
+
+
+    public static CompletableFuture<String> listAll() {
+        return listAll(null);
+    }
+
+    public static CompletableFuture<String> listAll(final @Nullable Consumer<@NotNull Throwable> onError) {
+        return CompletableFuture.supplyAsync(() -> {
+            try {
+                final File file = getFile(Paths.get("").toAbsolutePath().toString()).join();
+                if (file == null) return "No file found!";
+
+                final String fileContent = Files.readString(Paths.get(file.getAbsolutePath()), StandardCharsets.UTF_8);
+                if (fileContent.isEmpty()) return "Nothing was added to the current session yet!";
+
+                Logger.log("Listing all backseat messages in the current session...");
+
+                final int messageCount = new JSONObject(fileContent).keySet().stream().filter(key -> key.startsWith("backseat")).toList().size();
+                return "There are " + (messageCount == 0 ? "no" : messageCount) + " backseat messages in the current" +
+                        " " +
+                        "session!";
+            } catch (final Throwable throwable) {
+                if (onError != null) onError.accept(throwable);
+                return "No file found! (with errors)";
+            }
+        });
+    }
+
+    public static CompletableFuture<String> listUserInputSize(
+            final @NotNull String user,
+            final @Nullable Consumer<Throwable> onError
+    ) {
+        return CompletableFuture.supplyAsync(() -> {
+            try {
+                final File file = getFile(Paths.get("").toAbsolutePath().toString()).join();
+                if (file == null) return "No file found!";
+
+                final String fileContent = Files.readString(Paths.get(file.getAbsolutePath()), StandardCharsets.UTF_8);
+                if (fileContent.isEmpty()) return "Nothing was added to the current session yet!";
+
+                final String trimmedUser = user.trim();
+                final JSONObject fileContentJsonObj = new JSONObject(fileContent);
+
+                final int messageCount = fileContentJsonObj.keySet().stream().filter(key -> key.startsWith("backseat") &&
+                        Objects.equals(fileContentJsonObj.getJSONObject(key).getString("user"), trimmedUser)).toList().size();
+                return "User " + user + " has " + (messageCount == 0 ? "no" : messageCount) + " messages in the current session!";
+            } catch (final Throwable throwable) {
+                if (onError != null) onError.accept(throwable);
+                return "No file found! (with errors)";
+            }
+        });
+    }
+
+    public static CompletableFuture<String> searchAllInput(final @NotNull String search) {
+        return searchAllInput(search, null);
+    }
+
+    public static CompletableFuture<String> searchAllInput(
+            final @NotNull String search,
+            final @Nullable Consumer<Throwable> onError
+    ) {
+        return CompletableFuture.supplyAsync(() -> {
+            try {
+                final File file = getFile(Paths.get("").toAbsolutePath().toString()).join();
+                if (file == null) return "No file found!";
+
+                final String fileContent = Files.readString(Paths.get(file.getAbsolutePath()), StandardCharsets.UTF_8);
+                if (fileContent.isEmpty()) return "Nothing was added to the current session yet!";
+
+                final String regex = String.format(".*\\b%s\\b.*", search);
+                final JSONObject fileContentJsonObj = new JSONObject(fileContent);
+                final Map<String, Integer> contentToMsgCountMap = new ConcurrentHashMap<>();
+                int messageCount = 0;
+
+                Logger.log(String.format("Searching for \"%s\" in the current session...", search));
+
+                for (final String key : fileContentJsonObj.keySet()) {
+                    if (!key.startsWith("backseat")) continue;
+                    final String content = fileContentJsonObj.getJSONObject(key).getString("content");
+                    if (!content.matches(regex)) continue;
+                    contentToMsgCountMap.put(content, ++messageCount);
+                    Logger.log(String.format("Found \"%s\" in message %d = \"%s\"", search, messageCount, content));
+                }
+
+                if (messageCount == 0)
+                    return String.format("There are no messages containing \"%s\" in the current session!", search);
+                final StringBuilder resultBuilder = new StringBuilder();
+                contentToMsgCountMap.forEach((key, value) -> resultBuilder
+                        .append("Result ")
+                        .append(value)
+                        .append(" = \"")
+                        .append(key)
+                        .append("\"")
+                        .append(System.lineSeparator())
+                        .append("  "));
+                return resultBuilder.toString();
+            } catch (final Throwable throwable) {
+                if (onError != null) onError.accept(throwable);
+                return "No file found! (with errors)";
+            }
+        });
+    }
+
+    // @formatter:off
+    public static CompletableFuture<String> searchUserInput(
+            final @NotNull String user,
+            final @NotNull String search
+    ) { return searchUserInput(user, search, null); }
+    // @formatter:on
+
+    public static CompletableFuture<String> searchUserInput(
+            final @NotNull String user,
+            final @NotNull String search,
+            final @Nullable Consumer<Throwable> onError
+    ) {
+        return CompletableFuture.supplyAsync(() -> {
+            try {
+                final File file = getFile(Paths.get("").toAbsolutePath().toString()).join();
+                if (file == null) return "No file found!";
+
+                final String fileContent = Files.readString(Paths.get(file.getAbsolutePath()), StandardCharsets.UTF_8);
+                if (fileContent.isEmpty()) return "Nothing was added to the current session yet!";
+
+                final String regex = String.format(".*\\b%s\\b.*", search);
+                final JSONObject fileContentJsonObj = new JSONObject(fileContent);
+                final Map<String, Integer> contentToMsgCountMap = new ConcurrentHashMap<>();
+                int messageCount = 0;
+
+                Logger.log(String.format("Searching for \"%s\" in the current session...", search));
+
+                for (final String key : fileContentJsonObj.keySet()) {
+                    if (!key.startsWith("backseat")) continue;
+                    final JSONObject backseatJson = fileContentJsonObj.getJSONObject(key);
+                    final String content = backseatJson.getString("content");
+                    if (!content.matches(regex)) continue;
+                    if (!Objects.equals(backseatJson.getString("user"), user.trim())) continue;
+                    contentToMsgCountMap.put(content, ++messageCount);
+                    Logger.log(String.format("Found \"%s\" in message %d = \"%s\" for user \"%s\"!", search, messageCount, content, user));
+                }
+
+                if (messageCount == 0)
+                    return String.format("User %s has no messages containing \"%s\" in the current session!", user, search);
+                final StringBuilder resultBuilder = new StringBuilder();
+                for (Map.Entry<String, Integer> entry : contentToMsgCountMap.entrySet()) {
+                    String content = entry.getKey();
+                    int count = entry.getValue();
+                    resultBuilder
+                            .append("Result ")
+                            .append(count)
+                            .append(" = \"")
+                            .append(content)
+                            .append("\"")
+                            .append(System.lineSeparator())
+                            .append("  ");
+                }
+                return resultBuilder.toString();
+            } catch (final Throwable throwable) {
+                if (onError != null) onError.accept(throwable);
+                return "No file found! (with errors)";
+            }
+        });
+    }
+
+    public static CompletableFuture<String> getInput(final int id) {
+        return CompletableFuture.supplyAsync(() -> {
+            try {
+                final File file = getFile(Paths.get("").toAbsolutePath().toString()).join();
+                if (file == null) return "No input found!";
+                String json = Files.readString(Paths.get(file.getAbsolutePath()));
+                if (json.isEmpty())
+                    return "Nothing was added to the current session yet!";
                 JSONObject jsonObject = new JSONObject(json);
                 JSONObject backseat = jsonObject.getJSONObject("backseat" + id);
                 String time = backseat.getString("time");
                 String user = backseat.getString("user");
                 String content = backseat.getString("content");
-                //Logger.log("Time: " + time + " User: " + user + " Content: " + content);
                 return user + " said this at " + time + ":\n" + content;
-            } catch (Exception e) {
+            } catch (IOException e) {
                 Logger.log("Failed to read JSON file!");
             }
-        }
-        return "No input found!";
+            return "No input found!";
+        });
     }
 
     private static JSONObject readJsonObject(String filePath) throws IOException {
@@ -272,22 +342,6 @@ public class FileHelper {
             Logger.log("Failed to write to file!");
         }
     }
-
-    static Thread thread = new Thread(() -> {
-        obshelper.isRunning = true;
-        // toggle scene visibility to false
-        // wait for 3seconds
-        try {
-            obshelper.toggleSceneVisibility(false);
-            Thread.sleep(2000);
-            // toggle scene visibility to true
-            obshelper.toggleSceneVisibility(true);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        obshelper.isRunning = false;
-        return;
-    });
 
     public static void writeOBSFile(String text) throws IOException {
         // create file if it doesn't exist

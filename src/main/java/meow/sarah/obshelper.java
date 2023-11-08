@@ -45,7 +45,7 @@ public class obshelper {
         GetSceneListResponse getSceneListResponse = leagueController.getSceneList(10_000);
         if (getSceneListResponse.isSuccessful()) {
             getSceneListResponse.getScenes().forEach(scene1 -> {
-                if (scene1.getSceneName().equals(FileHelper.obsscene.trim())) {
+                if (scene1.getSceneName().equals(FileHelper.obsScene.trim())) {
                     try {
                         leagueController.setSceneItemEnabled(scene1.getSceneName(), getItemID(scene1.getSceneName()), status, 100);
                     } catch (Exception e) {

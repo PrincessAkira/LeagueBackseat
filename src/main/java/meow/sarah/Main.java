@@ -24,22 +24,23 @@ public class Main {
     static String date = new SimpleDateFormat("dd-MM-yyyy").format(new Date());
     static File outputfile;
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws IOException, InterruptedException {
         System.out.println("Starting...");
         String currentPath = new java.io.File(".").getCanonicalPath();
         outputfile = new File("output-" + date + ".txt");
         try {
-            loadFile(currentPath);
+            loadFile(currentPath).join();
         } catch (Exception e) {
             Logger.log("Failed to load config file!");
             System.exit(0);
         }
-        OAuth2Credential credential = new OAuth2Credential("twitch", authkey);
-        TwitchClient twitchClient = TwitchClientBuilder.builder()
+        OAuth2Credential credential = new OAuth2Credential("twitch", authKey);
+        TwitchClient twitchClient;
+        twitchClient = TwitchClientBuilder.builder()
                 .withEnableHelix(true)
                 .withChatAccount(credential)
-                .withClientId(clientid)
-                .withClientSecret(clientsecret)
+                .withClientId(clientId)
+                .withClientSecret(clientSecret)
                 .withEnableChat(true)
                 .build();
         try {

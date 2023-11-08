@@ -9,12 +9,11 @@ config.json
 output/
 
 Test
-
 *.txt
 
 *.json
-.idea/
-.idea*
+.idea*\
+/.idea/
 
 .idea/workspace.xml
 
@@ -53,3 +52,4 @@ build/
 
 ### Mac OS ###
 .DS_Store
+/.idea/
