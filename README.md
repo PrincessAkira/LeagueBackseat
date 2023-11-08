@@ -48,6 +48,8 @@ This is a TwitchBot that allows viewers to Backseat the streamer.
 
 - [this one guy there that helped me test](https://www.discordapp.com/users/294910497499774976)
 - [DrPanger for the Idea](https://www.twitch.tv/drpanger)
+- [Luzey for the help](https://github.com/vergessene)
+- [Anno for more help regarding Threaded and moar](https://twitter.com/annnoo96)
 
 <div align="center">
 
